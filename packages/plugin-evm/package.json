@@ -1,0 +1,22 @@
+{
+    "name": "@ai16z/plugin-evm",
+    "version": "0.0.1",
+    "main": "dist/index.js",
+    "type": "module",
+    "types": "dist/index.d.ts",
+    "dependencies": {
+        "@ai16z/eliza": "workspace:*",
+        "@lifi/sdk": "^3.4.1",
+        "node-cache": "5.1.2",
+        "tsup": "^8.3.5",
+        "viem": "^2.21.45"
+    },
+    "scripts": {
+        "build": "SKIP_NODE_VERSION_CHECK=true tsup --format esm --dts",
+        "test": "jest",
+        "test:docker": "docker build -f Dockerfile.dev -t evm-plugin-test . && docker run evm-plugin-test pnpm test"
+    },
+    "peerDependencies": {
+        "whatwg-url": "7.1.0"
+    }
+}
