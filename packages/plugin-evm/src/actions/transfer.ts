@@ -2,7 +2,7 @@ import { ByteArray, parseEther, type Hex } from 'viem'
 import { WalletProvider } from '../providers/wallet'
 import type { Transaction, TransferParams } from '../types'
 import { transferTemplate } from '../templates'
-import type { Action, IAgentRuntime, Memory, State } from '@ai16z/eliza'
+import type { Action, ActionExample, IAgentRuntime, Memory, State } from '@ai16z/eliza'
 
 export { transferTemplate }
 export class TransferAction {
@@ -59,53 +59,48 @@ export const transferAction: Action = {
   examples: [
     [
       {
-        user: "assistant",
+        user: "{{user1}}",
         content: {
-          text: "I'll help you transfer 1 ETH to 0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+          chain: "ethereum",
+          amount: "1",
+          toAddress: "0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+          token: "ETH"
+        }
+      },
+      {
+        user: "{{user2}}",
+        content: {
+          text: "Transferring 1 ETH to 0x742d35Cc6634C0532925a3b844Bc454e4438f44e...",
           action: "SEND_TOKENS"
         }
       },
       {
-        user: "user",
+        user: "{{user2}}",
         content: {
-          text: "Transfer 1 ETH to 0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
-          action: "SEND_TOKENS"
+          text: "Transfer completed successfully! Transaction: 0x123...",
+          status: "success"
         }
       }
     ],
     [
       {
-        user: "assistant",
+        user: "{{user1}}",
         content: {
-          text: "I'll help you send 500 USDC to vitalik.eth",
-          action: "SEND_TOKENS"
+          chain: "base",
+          amount: "500",
+          toAddress: "vitalik.eth",
+          token: "USDC"
         }
       },
       {
-        user: "user",
+        user: "{{user2}}",
         content: {
-          text: "Send 500 USDC to vitalik.eth",
-          action: "SEND_TOKENS"
-        }
-      }
-    ],
-    [
-      {
-        user: "assistant",
-        content: {
-          text: "I'll help you move 0.5 ETH to my other wallet 0x123...",
-          action: "SEND_TOKENS"
-        }
-      },
-      {
-        user: "user",
-        content: {
-          text: "Move 0.5 ETH to my other wallet 0x123...",
-          action: "SEND_TOKENS"
+          text: "Transfer failed: Insufficient USDC balance",
+          status: "error"
         }
       }
     ]
-  ],
+  ] as ActionExample[][],
   similes: [
     'SEND_TOKENS',
     'TOKEN_TRANSFER',

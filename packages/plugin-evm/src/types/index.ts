@@ -130,3 +130,16 @@ export interface ProviderError extends Error {
   code?: number
   data?: unknown
 }
+
+export enum WalletType {
+  EVM = 'EVM',
+  SOLANA = 'SOLANA'
+}
+
+export interface WalletStatus {
+  type: WalletType;
+  isConnected: boolean;
+  balance: string | null;
+  address: string | null;
+  chain?: string;
+}

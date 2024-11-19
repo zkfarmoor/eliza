@@ -3,7 +3,7 @@ import { WalletProvider } from '../providers/wallet'
 import type { Transaction, BridgeParams, SupportedChain } from '../types'
 import { CHAIN_CONFIGS } from '../providers/wallet'
 import { bridgeTemplate } from '../templates'
-import type { IAgentRuntime, Memory, State } from '@ai16z/eliza'
+import type { ActionExample, IAgentRuntime, Memory, State } from '@ai16z/eliza'
 
 export { bridgeTemplate }
 
@@ -160,7 +160,7 @@ export const bridgeAction = {
   },
   template: bridgeTemplate,
   validate: async (runtime: IAgentRuntime) => {
-    const privateKey = runtime.getSetting("EVM.PRIVATE_KEY");
+    const privateKey = runtime.getSetting("EVM_PRIVATE_KEY");
     const hasValidKey = typeof privateKey === 'string' && privateKey.startsWith('0x');
     if (!hasValidKey) {
       throw new Error('Invalid or missing EVM private key');
@@ -170,37 +170,48 @@ export const bridgeAction = {
   examples: [
     [
       {
-        user: "assistant",
+        user: "{{user1}}",
         content: {
-          text: "I'll help you bridge 1 ETH from Ethereum to Base",
+          fromChain: "ethereum",
+          toChain: "base",
+          amount: "1",
+          token: "ETH"
+        }
+      },
+      {
+        user: "{{user2}}",
+        content: {
+          text: "Bridging 1 ETH from Ethereum to Base...",
           action: "CROSS_CHAIN_TRANSFER"
         }
       },
       {
-        user: "user",
+        user: "{{user2}}",
         content: {
-          text: "Bridge 1 ETH from Ethereum to Base",
-          action: "CROSS_CHAIN_TRANSFER"
+          text: "Bridge completed successfully! Transaction: 0x123...",
+          status: "success"
         }
       }
     ],
     [
       {
-        user: "assistant",
+        user: "{{user1}}",
         content: {
-          text: "I'll help you move 500 USDC from Base to Optimism",
-          action: "CROSS_CHAIN_TRANSFER"
+          fromChain: "base",
+          toChain: "optimism",
+          amount: "500",
+          token: "USDC"
         }
       },
       {
-        user: "user",
+        user: "{{user2}}",
         content: {
-          text: "Move 500 USDC from Base to Optimism",
-          action: "CROSS_CHAIN_TRANSFER"
+          text: "Bridge failed: No routes available",
+          status: "error"
         }
       }
     ]
-  ],
+  ] as ActionExample[][],
   similes: [
     'CROSS_CHAIN_TRANSFER',
     'CHAIN_BRIDGE',

@@ -1,7 +1,7 @@
 import type { IAgentRuntime, Provider, Memory, State } from "@ai16z/eliza";
 import { createPublicClient, createWalletClient, http, formatUnits, type PublicClient, type WalletClient, type Chain, type HttpTransport, type Address, Account } from 'viem'
 import { mainnet, base } from 'viem/chains'
-import type { SupportedChain, ChainConfig, ChainMetadata } from '../types'
+import { SupportedChain, ChainConfig, ChainMetadata, WalletStatus, WalletType } from '../types'
 import { privateKeyToAccount } from "viem/accounts";
 
 export const CHAIN_CONFIGS: Record<SupportedChain, ChainMetadata> = {
@@ -35,34 +35,72 @@ export class WalletProvider {
   private chainConfigs: Record<SupportedChain, ChainConfig>
   private currentChain: SupportedChain = 'ethereum'
   private address: Address
+  private logger: Console
 
   constructor(private runtime: IAgentRuntime) {
-    const privateKey = runtime.getSetting("EVM_PRIVATE_KEY")
-    if (!privateKey) throw new Error("EVM_PRIVATE_KEY not configured")
-
-    const account = privateKeyToAccount(privateKey as `0x${string}`)
-    const address = account.address
-
-    const createClients = (chain: SupportedChain) => {
-      const transport = http(CHAIN_CONFIGS[chain].rpcUrl)
-      return {
-        chain: CHAIN_CONFIGS[chain].chain,
-        publicClient: createPublicClient({
-          chain: CHAIN_CONFIGS[chain].chain,
-          transport
-        }),
-        walletClient: createWalletClient({
-          chain: CHAIN_CONFIGS[chain].chain,
-          transport,
-          account
-        })
+    this.logger = console;
+    this.logger.debug('[EVM] Initializing wallet provider');
+    
+    try {
+      const privateKey = runtime.getSetting("EVM_PRIVATE_KEY")
+      if (!privateKey) {
+        this.logger.warn('[EVM] No private key configured');
+        throw new Error("EVM_PRIVATE_KEY not configured")
       }
-    }
 
-    this.chainConfigs = {
-      ethereum: createClients('ethereum'),
-      base: createClients('base')
+      const account = privateKeyToAccount(privateKey as `0x${string}`)
+      this.address = account.address
+      this.logger.debug(`[EVM] Wallet initialized with address: ${this.address}`);
+
+      const createClients = (chain: SupportedChain) => {
+        this.logger.debug(`[EVM] Creating clients for chain: ${chain}`);
+        return {
+          chain: CHAIN_CONFIGS[chain].chain,
+          publicClient: createPublicClient({
+            chain: CHAIN_CONFIGS[chain].chain,
+            transport: http(CHAIN_CONFIGS[chain].rpcUrl)
+          }),
+          walletClient: createWalletClient({
+            chain: CHAIN_CONFIGS[chain].chain,
+            transport: http(CHAIN_CONFIGS[chain].rpcUrl),
+            account
+          })
+        }
+      }
+
+      this.chainConfigs = {
+        ethereum: createClients('ethereum'),
+        base: createClients('base')
+      }
+    } catch (error) {
+      this.logger.error('[EVM] Failed to initialize wallet provider:', error);
+      throw error;
     }
+  }
+
+  async getWalletStatus(): Promise<WalletStatus> {
+    try {
+      const balance = await this.getWalletBalance();
+      return {
+        type: WalletType.EVM,
+        isConnected: true,
+        balance: balance || '0',
+        address: this.address,
+        chain: this.currentChain
+      };
+    } catch (error) {
+      this.logger.error('[EVM] Error getting wallet status:', error);
+      return {
+        type: WalletType.EVM,
+        isConnected: false,
+        balance: '0',
+        address: null
+      };
+    }
+  }
+
+  getCurrentChain(): SupportedChain {
+    return this.currentChain;
   }
 
   getAddress(): Address {
@@ -113,21 +151,13 @@ export class WalletProvider {
   }
 
   getPublicClient(chain: SupportedChain): PublicClient<HttpTransport, Chain, Account | undefined> {
-    const rpcUrl = this.runtime.getSetting(`EVM.RPC_URLS.${chain.toUpperCase()}`);
-    if (!rpcUrl) {
-      throw new Error(`No RPC URL configured for chain: ${chain}`);
-    }
-    return this.chainConfigs[chain].publicClient
+    return this.chainConfigs[chain].publicClient;
   }
 
   getWalletClient(): WalletClient {
     const walletClient = this.chainConfigs[this.currentChain].walletClient
     if (!walletClient) throw new Error('Wallet not connected')
     return walletClient
-  }
-
-  getCurrentChain(): SupportedChain {
-    return this.currentChain
   }
 
   getChainConfig(chain: SupportedChain) {

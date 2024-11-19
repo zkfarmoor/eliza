@@ -18,10 +18,6 @@ export const character: Character = {
             ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
             EVM_PRIVATE_KEY: process.env.EVM_PRIVATE_KEY,
             EVM_PUBLIC_KEY: process.env.EVM_PUBLIC_KEY,
-            EVM_RPC_URLS: JSON.stringify({
-                ETH: process.env.ETH_RPC_URL || "https://eth.llamarpc.com",
-                BASE: process.env.BASE_RPC_URL || "https://base.llamarpc.com",
-            }),
             SOLANA_PUBLIC_KEY: process.env.SOLANA_PUBLIC_KEY,
             SOLANA_PRIVATE_KEY: process.env.SOLANA_PRIVATE_KEY
         },

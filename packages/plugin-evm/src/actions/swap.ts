@@ -3,7 +3,7 @@ import { WalletProvider } from '../providers/wallet'
 import type { Transaction, SwapParams, SupportedChain } from '../types'
 import { CHAIN_CONFIGS } from '../providers/wallet'
 import { swapTemplate } from '../templates'
-import type { IAgentRuntime, Memory, State } from '@ai16z/eliza'
+import type { ActionExample, IAgentRuntime, Memory, State } from '@ai16z/eliza'
 
 export { swapTemplate }
 
@@ -167,28 +167,44 @@ export class SwapAction {
     }
   }
 }
-
 export const swapAction = {
-  name: 'swap',
-  description: 'Swap tokens on the same chain',
+  name: "SWAP_TOKENS",
+  description: "Swap tokens on the same chain",
   handler: async (runtime: IAgentRuntime, message: Memory, state: State, options: any, callback?: any) => {
+    const logger = console;
+    logger.debug('[EVM Swap] Starting swap handler');
+    
     try {
       const walletProvider = new WalletProvider(runtime);
+      const walletStatus = await walletProvider.getWalletStatus();
       
+      if (!walletStatus.isConnected) {
+        throw new Error('EVM wallet not connected');
+      }
+
+      const walletBalance = await walletProvider.getWalletBalance();
+      if (!walletBalance || walletBalance === '0') {
+        throw new Error('EVM wallet has zero balance');
+      }
+
       // Validate token addresses
       if (!options.fromToken || !options.toToken) {
+        logger.error('[EVM Swap] Invalid token addresses');
         throw new Error('Invalid token addresses provided');
       }
 
       // Set chain based on options or default to base
       const targetChain = options.chain?.toLowerCase() || 'base';
+      logger.debug(`[EVM Swap] Target chain: ${targetChain}`);
+      
       if (targetChain !== walletProvider.getCurrentChain()) {
+        logger.debug(`[EVM Swap] Switching chain from ${walletProvider.getCurrentChain()} to ${targetChain}`);
         await walletProvider.switchChain(targetChain as SupportedChain);
       }
 
       // Check wallet balance
       const balance = await walletProvider.getWalletBalance();
-      if (!balance) {
+      if (!balance || balance === '0') {
         throw new Error(`No balance found on ${targetChain}`);
       }
 
@@ -211,18 +227,19 @@ export const swapAction = {
       }
       return result;
     } catch (error) {
-      console.error('Error in swap handler:', error.message);
+      logger.error('[EVM Swap] Handler error:', error);
       if (callback) {
         callback({ 
           text: `Swap failed: ${error.message}`,
-          error: error.message
+          error: error.message,
+          status: 'error'
         });
       }
       return false;
     }
   },
   validate: async (runtime: IAgentRuntime) => {
-    const privateKey = runtime.getSetting("EVM.PRIVATE_KEY");
+    const privateKey = runtime.getSetting("EVM_PRIVATE_KEY");
     const hasValidKey = typeof privateKey === 'string' && privateKey.startsWith('0x');
     if (!hasValidKey) {
       throw new Error('Invalid or missing EVM private key');
@@ -232,37 +249,55 @@ export const swapAction = {
   examples: [
     [
       {
-        user: "assistant",
+        user: "{{user1}}",
         content: {
-          text: "I'll help you swap 1 ETH for USDC on Base",
+          inputToken: "ETH",
+          outputToken: "USDC",
+          amount: "1",
+          chain: "base"
+        }
+      },
+      {
+        user: "{{user2}}",
+        content: {
+          text: "Swapping 1 ETH for USDC on Base...",
           action: "SWAP_TOKENS"
         }
       },
       {
-        user: "user",
+        user: "{{user2}}",
         content: {
-          text: "Swap 1 ETH for USDC on Base",
-          action: "SWAP_TOKENS"
+          text: "Swap completed successfully! Transaction: 0x123...",
+          status: "success"
         }
       }
     ],
     [
       {
-        user: "assistant",
+        user: "{{user1}}",
         content: {
-          text: "I'll help you trade 500 USDC for ETH on Optimism",
+          inputToken: "USDC",
+          outputToken: "ETH",
+          amount: "500",
+          chain: "ethereum"
+        }
+      },
+      {
+        user: "{{user2}}",
+        content: {
+          text: "Swapping 500 USDC for ETH on Ethereum...",
           action: "SWAP_TOKENS"
         }
       },
       {
-        user: "user",
+        user: "{{user2}}",
         content: {
-          text: "Trade 500 USDC for ETH on Optimism",
-          action: "SWAP_TOKENS"
+          text: "Swap failed: Insufficient balance",
+          status: "error"
         }
       }
     ]
-  ],
+  ] as ActionExample[][],
   similes: [
     'SWAP_TOKENS',
     'EXCHANGE_TOKENS',
@@ -277,4 +312,4 @@ export const swapAction = {
     'CONVERT_TOKENS',
     'TRADE_CRYPTO'
   ]
-};
+}
