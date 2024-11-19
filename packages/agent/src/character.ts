@@ -1,13 +1,30 @@
-import { Character, ModelProviderName, defaultCharacter } from "@ai16z/eliza";
+import {
+    Character,
+    ModelProviderName,
+    ModelClass,
+    defaultCharacter,
+} from "@ai16z/eliza";
+import { evmPlugin } from "@ai16z/plugin-evm";
+import { solanaPlugin } from "@ai16z/plugin-solana";
 
 export const character: Character = {
     ...defaultCharacter,
     name: "Eliza",
-    plugins: [],
+    plugins: [evmPlugin, solanaPlugin],
     clients: [],
     modelProvider: ModelProviderName.ANTHROPIC,
     settings: {
-        secrets: {},
+        secrets: {
+            ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
+            EVM_PRIVATE_KEY: process.env.EVM_PRIVATE_KEY,
+            EVM_PUBLIC_KEY: process.env.EVM_PUBLIC_KEY,
+            EVM_RPC_URLS: JSON.stringify({
+                ETH: process.env.ETH_RPC_URL || "https://eth.llamarpc.com",
+                BASE: process.env.BASE_RPC_URL || "https://base.llamarpc.com",
+            }),
+            SOLANA_PUBLIC_KEY: process.env.SOLANA_PUBLIC_KEY,
+            SOLANA_PRIVATE_KEY: process.env.SOLANA_PRIVATE_KEY
+        },
         voice: {
             model: "en_US-hfc_female-medium",
         },
@@ -331,7 +348,7 @@ export const character: Character = {
         "Category theory",
         // domain topics
         "Cognitive science",
-    //     "Artificial intelligence",
+        //     "Artificial intelligence",
         "Quantum computing",
         "Complexity theory",
         "Chaos magic",
@@ -340,7 +357,7 @@ export const character: Character = {
         "Semiotics",
         "Linguistics",
         "Anthropology of religion",
-    //     "Sociology of science",
+        //     "Sociology of science",
         "History of mathematics",
         "Philosophy of mathematics",
         "Quantum field theory",

@@ -1,11 +1,35 @@
-import { ChainId, createConfig, executeRoute, getRoutes, ExtendedChain } from '@lifi/sdk'
+import { ChainId, createConfig, executeRoute, getRoutes, ExtendedChain, CallAction, Token, Action } from '@lifi/sdk'
 import { WalletProvider } from '../providers/wallet'
-import type { Transaction, SwapParams } from '../types'
+import type { Transaction, SwapParams, SupportedChain } from '../types'
 import { CHAIN_CONFIGS } from '../providers/wallet'
 import { swapTemplate } from '../templates'
 import type { IAgentRuntime, Memory, State } from '@ai16z/eliza'
 
 export { swapTemplate }
+
+interface ExtendedAction extends Action {
+  approvalAddress?: string
+  approvalContract?: {
+    encodeApprove: (amount: string) => string
+  }
+  encodedSwapData: () => string
+  fromToken: {
+    address: string
+  } & Token
+  toAddress: string
+}
+
+interface ExtendedCallAction extends CallAction {
+  approvalAddress?: string
+  approvalContract?: {
+    encodeApprove: (amount: string) => string
+  }
+  encodedSwapData: () => string
+  fromToken: {
+    address: string
+  } & Token
+  toAddress: string
+}
 
 export class SwapAction {
   private config
@@ -47,6 +71,64 @@ export class SwapAction {
     })
   }
 
+  async getTransactionStatus(hash: string, chain: SupportedChain): Promise<'success' | 'failed' | 'pending'> {
+    const publicClient = this.walletProvider.getPublicClient(chain)
+    const receipt = await publicClient.getTransactionReceipt({ hash: hash as `0x${string}` })
+    
+    if (!receipt) return 'pending'
+    return receipt.status === 'success' ? 'success' : 'failed'
+  }
+
+  async estimateGas(params: SwapParams): Promise<bigint | null> {
+    try {
+      const walletClient = this.walletProvider.getWalletClient()
+      const [fromAddress] = await walletClient.getAddresses()
+      const publicClient = this.walletProvider.getPublicClient(params.chain)
+
+      const routes = await getRoutes({
+        fromChainId: CHAIN_CONFIGS[params.chain].chainId as ChainId,
+        toChainId: CHAIN_CONFIGS[params.chain].chainId as ChainId,
+        fromTokenAddress: params.fromToken,
+        toTokenAddress: params.toToken,
+        fromAmount: params.amount,
+        fromAddress: fromAddress,
+        options: {
+          slippage: params.slippage || 0.5,
+          order: 'RECOMMENDED'
+        }
+      })
+
+      if (!routes.routes.length) return null
+
+      const route = routes.routes[0]
+      const step = route.steps[0]
+      const action = step.action as unknown as ExtendedAction | ExtendedCallAction
+      
+      // Check if token approval is needed
+      if (step.tool === 'approval') {
+        const gasEstimate = await publicClient.estimateGas({
+          account: fromAddress,
+          to: action.approvalAddress as `0x${string}`,
+          data: action.approvalContract?.encodeApprove(params.amount) as `0x${string}`
+        })
+        return gasEstimate
+      }
+
+      // Estimate the actual swap transaction
+      const gasEstimate = await publicClient.estimateGas({
+        account: fromAddress,
+        to: action.toAddress as `0x${string}`,
+        value: BigInt(action.fromToken.address === '0x0000000000000000000000000000000000000000' ? params.amount : '0'),
+        data: action.encodedSwapData() as `0x${string}`
+      })
+
+      return gasEstimate
+    } catch (error) {
+      console.error('Error estimating gas:', error)
+      return null
+    }
+  }
+
   async swap(params: SwapParams): Promise<Transaction> {
     const walletClient = this.walletProvider.getWalletClient()
     const [fromAddress] = await walletClient.getAddresses()
@@ -73,12 +155,14 @@ export class SwapAction {
       throw new Error('Transaction failed')
     }
 
+    const step = routes.routes[0].steps[0]
+
     return {
       hash: process.txHash as `0x${string}`,
       from: fromAddress,
-      to: routes.routes[0].steps[0].estimate.approvalAddress as `0x${string}`,
-      value: BigInt(params.amount),
-      data: process.data as `0x${string}`,
+      to: step.action.toAddress as `0x${string}`,
+      value: BigInt(step.action.fromToken.address === '0x0000000000000000000000000000000000000000' ? params.amount : '0'),
+      data: (step.action as unknown as ExtendedAction | ExtendedCallAction).encodedSwapData() as `0x${string}`,
       chainId: CHAIN_CONFIGS[params.chain].chainId
     }
   }
@@ -89,32 +173,108 @@ export const swapAction = {
   description: 'Swap tokens on the same chain',
   handler: async (runtime: IAgentRuntime, message: Memory, state: State, options: any, callback?: any) => {
     try {
-      const walletProvider = new WalletProvider(runtime)
-      const action = new SwapAction(walletProvider)
-      return await action.swap(options)
-    } catch (error) {
-      console.error('Error in swap handler:', error.message)
-      if (callback) {
-        callback({ text: `Error: ${error.message}` })
+      const walletProvider = new WalletProvider(runtime);
+      
+      // Validate token addresses
+      if (!options.fromToken || !options.toToken) {
+        throw new Error('Invalid token addresses provided');
       }
-      return false
+
+      // Set chain based on options or default to base
+      const targetChain = options.chain?.toLowerCase() || 'base';
+      if (targetChain !== walletProvider.getCurrentChain()) {
+        await walletProvider.switchChain(targetChain as SupportedChain);
+      }
+
+      // Check wallet balance
+      const balance = await walletProvider.getWalletBalance();
+      if (!balance) {
+        throw new Error(`No balance found on ${targetChain}`);
+      }
+
+      // Estimate gas before swap
+      const action = new SwapAction(walletProvider);
+      const gasEstimate = await action.estimateGas(options);
+      if (!gasEstimate) {
+        throw new Error('Failed to estimate gas');
+      }
+
+      // Execute swap with status tracking
+      const result = await action.swap(options);
+      const txStatus = await action.getTransactionStatus(result.hash, targetChain as SupportedChain);
+      
+      if (callback) {
+        callback({ 
+          text: `Swap executed successfully on ${targetChain}. Transaction: ${result.hash}`,
+          status: txStatus
+        });
+      }
+      return result;
+    } catch (error) {
+      console.error('Error in swap handler:', error.message);
+      if (callback) {
+        callback({ 
+          text: `Swap failed: ${error.message}`,
+          error: error.message
+        });
+      }
+      return false;
     }
   },
-  template: swapTemplate,
   validate: async (runtime: IAgentRuntime) => {
-    const privateKey = runtime.getSetting("EVM_PRIVATE_KEY")
-    return typeof privateKey === 'string' && privateKey.startsWith('0x')
+    const privateKey = runtime.getSetting("EVM.PRIVATE_KEY");
+    const hasValidKey = typeof privateKey === 'string' && privateKey.startsWith('0x');
+    if (!hasValidKey) {
+      throw new Error('Invalid or missing EVM private key');
+    }
+    return hasValidKey;
   },
   examples: [
     [
       {
+        user: "assistant",
+        content: {
+          text: "I'll help you swap 1 ETH for USDC on Base",
+          action: "SWAP_TOKENS"
+        }
+      },
+      {
         user: "user",
         content: {
           text: "Swap 1 ETH for USDC on Base",
-          action: "TOKEN_SWAP"
+          action: "SWAP_TOKENS"
+        }
+      }
+    ],
+    [
+      {
+        user: "assistant",
+        content: {
+          text: "I'll help you trade 500 USDC for ETH on Optimism",
+          action: "SWAP_TOKENS"
+        }
+      },
+      {
+        user: "user",
+        content: {
+          text: "Trade 500 USDC for ETH on Optimism",
+          action: "SWAP_TOKENS"
         }
       }
     ]
   ],
-  similes: ['TOKEN_SWAP', 'EXCHANGE_TOKENS', 'TRADE_TOKENS']
-} // TODO: add more examples
+  similes: [
+    'SWAP_TOKENS',
+    'EXCHANGE_TOKENS',
+    'TRADE_TOKENS',
+    'DEX_SWAP',
+    'TOKEN_EXCHANGE',
+    'AMM_SWAP',
+    'DEX_TRADE',
+    'TOKEN_CONVERSION',
+    'SWAP_CRYPTO',
+    'EXCHANGE_CRYPTO',
+    'CONVERT_TOKENS',
+    'TRADE_CRYPTO'
+  ]
+};

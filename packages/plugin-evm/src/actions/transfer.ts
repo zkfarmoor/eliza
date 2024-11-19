@@ -2,7 +2,7 @@ import { ByteArray, parseEther, type Hex } from 'viem'
 import { WalletProvider } from '../providers/wallet'
 import type { Transaction, TransferParams } from '../types'
 import { transferTemplate } from '../templates'
-import type { IAgentRuntime, Memory, State } from '@ai16z/eliza'
+import type { Action, IAgentRuntime, Memory, State } from '@ai16z/eliza'
 
 export { transferTemplate }
 export class TransferAction {
@@ -44,7 +44,7 @@ export class TransferAction {
   }
 }
 
-export const transferAction = {
+export const transferAction: Action = {
   name: 'transfer',
   description: 'Transfer tokens between addresses on the same chain',
   handler: async (runtime: IAgentRuntime, message: Memory, state: State, options: any) => {
@@ -52,7 +52,6 @@ export const transferAction = {
     const action = new TransferAction(walletProvider)
     return action.transfer(options)
   },
-  template: transferTemplate,
   validate: async (runtime: IAgentRuntime) => {
     const privateKey = runtime.getSetting("EVM_PRIVATE_KEY")
     return typeof privateKey === 'string' && privateKey.startsWith('0x')
@@ -73,7 +72,48 @@ export const transferAction = {
           action: "SEND_TOKENS"
         }
       }
+    ],
+    [
+      {
+        user: "assistant",
+        content: {
+          text: "I'll help you send 500 USDC to vitalik.eth",
+          action: "SEND_TOKENS"
+        }
+      },
+      {
+        user: "user",
+        content: {
+          text: "Send 500 USDC to vitalik.eth",
+          action: "SEND_TOKENS"
+        }
+      }
+    ],
+    [
+      {
+        user: "assistant",
+        content: {
+          text: "I'll help you move 0.5 ETH to my other wallet 0x123...",
+          action: "SEND_TOKENS"
+        }
+      },
+      {
+        user: "user",
+        content: {
+          text: "Move 0.5 ETH to my other wallet 0x123...",
+          action: "SEND_TOKENS"
+        }
+      }
     ]
   ],
-  similes: ['SEND_TOKENS', 'TOKEN_TRANSFER', 'MOVE_TOKENS']
+  similes: [
+    'SEND_TOKENS',
+    'TOKEN_TRANSFER',
+    'MOVE_TOKENS',
+    'SEND_COINS',
+    'TRANSFER_FUNDS',
+    'SEND_FUNDS',
+    'WALLET_TRANSFER',
+    'SEND_CRYPTO'
+  ]
 }

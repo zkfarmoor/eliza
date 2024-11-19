@@ -1,11 +1,35 @@
-import { ChainId, createConfig, executeRoute, getRoutes, ExtendedChain } from '@lifi/sdk'
+import { ChainId, createConfig, executeRoute, getRoutes, ExtendedChain, CallAction, Token, Action } from '@lifi/sdk'
 import { WalletProvider } from '../providers/wallet'
-import type { Transaction, BridgeParams } from '../types'
+import type { Transaction, BridgeParams, SupportedChain } from '../types'
 import { CHAIN_CONFIGS } from '../providers/wallet'
 import { bridgeTemplate } from '../templates'
 import type { IAgentRuntime, Memory, State } from '@ai16z/eliza'
 
 export { bridgeTemplate }
+
+interface ExtendedBridgeAction extends Action {
+  approvalAddress?: string
+  approvalContract?: {
+    encodeApprove: (amount: string) => string
+  }
+  encodedBridgeData?: () => string
+  fromToken: {
+    address: string
+  } & Token
+  toAddress: string
+}
+
+interface ExtendedBridgeCallAction extends CallAction {
+  approvalAddress?: string
+  approvalContract?: {
+    encodeApprove: (amount: string) => string
+  }
+  encodedBridgeData?: () => string
+  fromToken: {
+    address: string
+  } & Token
+  toAddress: string
+}
 
 export class BridgeAction {
   private config
@@ -61,12 +85,67 @@ export class BridgeAction {
       throw new Error('Transaction failed')
     }
 
+    const action = routes.routes[0].steps[0].action as unknown as ExtendedBridgeAction | ExtendedBridgeCallAction
+
     return {
       hash: process.txHash as `0x${string}`,
       from: fromAddress,
-      to: routes.routes[0].steps[0].estimate.approvalAddress as `0x${string}`,
+      to: action.approvalAddress as `0x${string}`,
       value: BigInt(params.amount),
       chainId: CHAIN_CONFIGS[params.fromChain].chainId
+    }
+  }
+
+  async getTransactionStatus(hash: string, chain: SupportedChain): Promise<'success' | 'failed' | 'pending'> {
+    const publicClient = this.walletProvider.getPublicClient(chain)
+    const receipt = await publicClient.getTransactionReceipt({ hash: hash as `0x${string}` })
+    
+    if (!receipt) return 'pending'
+    return receipt.status === 'success' ? 'success' : 'failed'
+  }
+
+  async estimateGas(params: BridgeParams): Promise<bigint | null> {
+    try {
+      const walletClient = this.walletProvider.getWalletClient()
+      const [fromAddress] = await walletClient.getAddresses()
+      const publicClient = this.walletProvider.getPublicClient(params.fromChain)
+
+      const routes = await getRoutes({
+        fromChainId: CHAIN_CONFIGS[params.fromChain].chainId as ChainId,
+        toChainId: CHAIN_CONFIGS[params.toChain].chainId as ChainId,
+        fromTokenAddress: params.fromToken,
+        toTokenAddress: params.toToken,
+        fromAmount: params.amount,
+        fromAddress: fromAddress,
+        toAddress: params.toAddress || fromAddress
+      })
+
+      if (!routes.routes.length) return null
+
+      const route = routes.routes[0]
+      const step = route.steps[0]
+      const action = step.action as unknown as ExtendedBridgeAction | ExtendedBridgeCallAction
+
+      if (step.tool === 'approval') {
+        const gasEstimate = await publicClient.estimateGas({
+          account: fromAddress,
+          to: action.approvalAddress as `0x${string}`,
+          data: action.approvalContract?.encodeApprove(params.amount) as `0x${string}`
+        })
+        return gasEstimate
+      }
+
+      const gasEstimate = await publicClient.estimateGas({
+        account: fromAddress,
+        to: action.toAddress as `0x${string}`,
+        value: BigInt(action.fromToken.address === '0x0000000000000000000000000000000000000000' ? params.amount : '0'),
+        data: action.encodedBridgeData?.() as `0x${string}`
+      })
+
+      return gasEstimate
+    } catch (error) {
+      console.error('Error estimating gas:', error)
+      return null
     }
   }
 }
@@ -81,11 +160,22 @@ export const bridgeAction = {
   },
   template: bridgeTemplate,
   validate: async (runtime: IAgentRuntime) => {
-    const privateKey = runtime.getSetting("EVM_PRIVATE_KEY")
-    return typeof privateKey === 'string' && privateKey.startsWith('0x')
+    const privateKey = runtime.getSetting("EVM.PRIVATE_KEY");
+    const hasValidKey = typeof privateKey === 'string' && privateKey.startsWith('0x');
+    if (!hasValidKey) {
+      throw new Error('Invalid or missing EVM private key');
+    }
+    return hasValidKey;
   },
   examples: [
     [
+      {
+        user: "assistant",
+        content: {
+          text: "I'll help you bridge 1 ETH from Ethereum to Base",
+          action: "CROSS_CHAIN_TRANSFER"
+        }
+      },
       {
         user: "user",
         content: {
@@ -93,7 +183,31 @@ export const bridgeAction = {
           action: "CROSS_CHAIN_TRANSFER"
         }
       }
+    ],
+    [
+      {
+        user: "assistant",
+        content: {
+          text: "I'll help you move 500 USDC from Base to Optimism",
+          action: "CROSS_CHAIN_TRANSFER"
+        }
+      },
+      {
+        user: "user",
+        content: {
+          text: "Move 500 USDC from Base to Optimism",
+          action: "CROSS_CHAIN_TRANSFER"
+        }
+      }
     ]
   ],
-  similes: ['CROSS_CHAIN_TRANSFER', 'CHAIN_BRIDGE', 'MOVE_CROSS_CHAIN']
-} // TODO: add more examples / similies
+  similes: [
+    'CROSS_CHAIN_TRANSFER',
+    'CHAIN_BRIDGE',
+    'MOVE_CROSS_CHAIN',
+    'BRIDGE_TOKENS',
+    'CROSS_CHAIN_BRIDGE',
+    'CHAIN_HOP',
+    'L2_BRIDGE'
+  ]
+}

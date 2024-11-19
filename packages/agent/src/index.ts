@@ -234,13 +234,18 @@ export async function createAgent(character: Character, db: any, token: string) 
     console.log("Creating runtime for character", character.name);
     
     const plugins = [bootstrapPlugin, nodePlugin];
+    const secrets = character.settings?.secrets;
 
-    if (character.settings.secrets?.SOLANA_PUBLIC_KEY) {
-        plugins.push(solanaPlugin);
-    }
-
-    if (character.settings.secrets?.EVM_PRIVATE_KEY) {
-        plugins.push(evmPlugin);
+    // Load plugins from character config, but validate their credentials first
+    if (character.plugins) {
+        for (const plugin of character.plugins) {
+            if (plugin === evmPlugin && secrets?.EVM_PRIVATE_KEY?.startsWith('0x')) {
+                plugins.push(plugin);
+            }
+            if (plugin === solanaPlugin && secrets?.SOLANA_PRIVATE_KEY) {
+                plugins.push(plugin);
+            }
+        }
     }
 
     return new AgentRuntime({

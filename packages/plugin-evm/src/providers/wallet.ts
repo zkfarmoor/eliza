@@ -41,7 +41,7 @@ export class WalletProvider {
     if (!privateKey) throw new Error("EVM_PRIVATE_KEY not configured")
 
     const account = privateKeyToAccount(privateKey as `0x${string}`)
-    this.address = account.address
+    const address = account.address
 
     const createClients = (chain: SupportedChain) => {
       const transport = http(CHAIN_CONFIGS[chain].rpcUrl)
@@ -74,10 +74,10 @@ export class WalletProvider {
       const client = this.getPublicClient(this.currentChain);
       const walletClient = this.getWalletClient();
       const balance = await client.getBalance({ address: walletClient.account.address });
-      return formatUnits(balance, 18)
+      return formatUnits(balance, 18);
     } catch (error) {
-      console.error('Error getting wallet balance:', error)
-      return null
+      console.error('Error getting wallet balance:', error);
+      throw error;
     }
   }
 
@@ -113,6 +113,10 @@ export class WalletProvider {
   }
 
   getPublicClient(chain: SupportedChain): PublicClient<HttpTransport, Chain, Account | undefined> {
+    const rpcUrl = this.runtime.getSetting(`EVM.RPC_URLS.${chain.toUpperCase()}`);
+    if (!rpcUrl) {
+      throw new Error(`No RPC URL configured for chain: ${chain}`);
+    }
     return this.chainConfigs[chain].publicClient
   }
 
@@ -134,13 +138,25 @@ export class WalletProvider {
 export const evmWalletProvider: Provider = {
   async get(runtime: IAgentRuntime, message: Memory, state?: State): Promise<string | null> {
     try {
-      const walletProvider = new WalletProvider(runtime)
-      const address = walletProvider.getAddress()
-      const balance = await walletProvider.getWalletBalance()
-      return `EVM Wallet Address: ${address}\nBalance: ${balance} ETH`
+      const privateKey = runtime.getSetting("EVM_PRIVATE_KEY");
+      if (!privateKey?.startsWith('0x')) {
+        return "EVM wallet not configured";
+      }
+
+      const walletProvider = new WalletProvider(runtime);
+      const address = walletProvider.getAddress();
+      
+      try {
+        const balance = await walletProvider.getWalletBalance();
+        return `EVM Wallet ${address}\nBalance: ${balance} ETH`;
+      } catch (balanceError) {
+        console.error('Balance check error:', balanceError);
+        return `EVM Wallet ${address}\nError checking balance: ${balanceError.message}`;
+      }
     } catch (error) {
-      console.error('Error in EVM wallet provider:', error)
-      return null
+      console.error('Error in EVM wallet provider:', error);
+      return "EVM wallet error: " + error.message;
     }
-  },
+  }
 }
+
