@@ -1,8 +1,10 @@
 {
-    "name": "eliza",
+    "name": "@workspace/eliza-core",
     "scripts": {
         "preinstall": "npx only-allow pnpm",
-        "build": "bash ./scripts/build.sh",
+        "build": "turbo run build --filter=\"packages/**\"",
+        "setup-playwright": "cd packages/plugin-node && npx playwright install-deps && npx playwright install",
+        "playwright:install": "cd packages/plugin-node && npx playwright install-deps && npx playwright install",
         "build-docs": "pnpm --dir docs build",
         "start:all": "pnpm --filter \"@ai16z/agent\" start:all --isRoot",
         "start:service:all": "pnpm --filter \"@ai16z/agent\" start:service:all --isRoot",

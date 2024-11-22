@@ -15,9 +15,14 @@
         "vitest": "^2.1.4"
     },
     "scripts": {
+<<<<<<< HEAD
         "build": "tsup --format esm --dts",
         "test": "vitest run",
         "test:watch": "vitest"
+=======
+        "build": "tsup",
+        "test": "vitest"
+>>>>>>> 7030f334 (.)
     },
     "peerDependencies": {
         "whatwg-url": "7.1.0"

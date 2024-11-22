@@ -6,7 +6,7 @@
     "type": "module",
     "types": "dist/index.d.ts",
     "scripts": {
-        "build": "tsup --format esm --dts",
+        "build": "tsup",
         "lint": "eslint . --fix",
         "watch": "tsc --watch",
         "dev": "tsup --format esm --dts --watch",

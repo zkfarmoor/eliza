@@ -12,12 +12,8 @@
         "vitest": "^2.1.4"
     },
     "scripts": {
-        "build": "tsup --format esm --dts",
-        "test": "vitest run",
-        "test:watch": "vitest"
-    },
-    "devDependencies": {
-        "@types/dompurify": "^3.2.0"
+        "build": "tsup",
+        "test": "vitest"
     },
     "peerDependencies": {
         "whatwg-url": "7.1.0"

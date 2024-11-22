@@ -1,0 +1,416 @@
+
+
+> @workspace/eliza-core@ build /home/jon/eliza-workspace/packages/eliza-core
+> PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 pnpm install && bash ./scripts/build.sh
+
+docs                                     | [43m[30m WARN [39m[49m Unsupported engine: wanted: {"node":"23.1.0"} (current: {"node":"v22.6.0","pnpm":"9.13.2"})
+Scope: all 19 workspace projects
+Lockfile is up to date, resolution step is skipped
+Progress: resolved [96m0[39m, reused [96m1[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m2[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m3[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m4[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m5[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m6[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m7[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m8[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m9[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m10[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m11[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m12[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m13[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m14[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m15[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m22[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m40[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m41[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m42[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m43[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m44[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m45[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m46[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m47[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m48[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m49[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m68[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m69[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m70[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m71[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m72[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m73[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m74[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m75[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m76[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m77[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m78[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m79[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m80[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m81[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m82[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m83[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m84[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m85[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m86[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m87[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m88[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m89[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m90[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m91[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m92[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m93[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m94[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m95[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m96[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m97[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m98[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m99[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m100[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m101[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m102[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m103[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m104[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m105[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m106[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m107[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m108[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m109[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m110[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m111[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m112[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m114[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m115[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m116[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m117[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m118[39m, downloaded [96m0[39m, added [96m0[39m
+[1APackages: [32m+15[39m [31m-103[39m[0K
+[32m+[39m[32m+[39m[32m+[39m[32m+[39m[32m+[39m[32m+[39m[32m+[39m[32m+[39m[32m+[39m[32m+[39m[32m+[39m[32m+[39m[32m+[39m[32m+[39m[32m+[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m[31m-[39m
+Progress: resolved [96m0[39m, reused [96m118[39m, downloaded [96m0[39m, added [96m0[39m
+[1AProgress: resolved [96m0[39m, reused [96m118[39m, downloaded [96m0[39m, added [96m1[39m
+[1AProgress: resolved [96m0[39m, reused [96m118[39m, downloaded [96m0[39m, added [96m4[39m
+[1AProgress: resolved [96m0[39m, reused [96m118[39m, downloaded [96m0[39m, added [96m5[39m
+[1AProgress: resolved [96m0[39m, reused [96m118[39m, downloaded [96m0[39m, added [96m8[39m
+[1AProgress: resolved [96m0[39m, reused [96m118[39m, downloaded [96m0[39m, added [96m12[39m
+[1AProgress: resolved [96m0[39m, reused [96m118[39m, downloaded [96m0[39m, added [96m15[39m
+[1AProgress: resolved [96m0[39m, reused [96m118[39m, downloaded [96m0[39m, added [96m15[39m, done
+Done in 2m 54.9s
+[1mBuilding package: core[0m
+
+> @ai16z/eliza@1.0.0 build
+> tsup --format esm --dts
+
+[1G[0K[34mCLI[39m Building entry: src/index.ts
+[34mCLI[39m Using tsconfig: tsconfig.json
+[34mCLI[39m tsup v8.3.5
+[34mCLI[39m Using tsup config: /home/jon/eliza-workspace/packages/eliza-core/packages/core/tsup.config.ts
+[34mCLI[39m Target: esnext
+[34mCLI[39m Cleaning output folder
+[34mESM[39m Build start
+[32mESM[39m [1mdist/index.js     [22m[32m108.65 KB[39m
+[32mESM[39m [1mdist/index.js.map [22m[32m256.64 KB[39m
+[32mESM[39m ⚡️ Build success in 199ms
+DTS Build start
+DTS ⚡️ Build success in 9070ms
+DTS dist/index.d.ts 61.50 KB
+[1G[0K⠙[1G[0K[1;32mSuccessfully built core[0m
+
+[1mBuilding package: plugin-trustdb[0m
+
+> @ai16z/plugin-trustdb@0.0.1 build
+> tsup --format esm --dts
+
+[1G[0K[34mCLI[39m Building entry: src/index.ts
+[34mCLI[39m Using tsconfig: tsconfig.json
+[34mCLI[39m tsup v8.3.5
+[34mCLI[39m Using tsup config: /home/jon/eliza-workspace/packages/eliza-core/packages/plugin-trustdb/tsup.config.ts
+[34mCLI[39m Target: esnext
+[34mCLI[39m Cleaning output folder
+[34mESM[39m Build start
+[32mESM[39m [1mdist/index.js     [22m[32m32.48 KB[39m
+[32mESM[39m [1mdist/index.js.map [22m[32m57.88 KB[39m
+[32mESM[39m ⚡️ Build success in 77ms
+DTS Build start
+DTS ⚡️ Build success in 11160ms
+DTS dist/index.d.ts 9.23 KB
+[1G[0K⠙[1G[0K[1;32mSuccessfully built plugin-trustdb[0m
+
+[1mBuilding package: plugin-solana[0m
+
+> @ai16z/plugin-solana@0.0.1 build
+> tsup --format esm --dts
+
+[1G[0K[34mCLI[39m Building entry: src/index.ts
+[34mCLI[39m Using tsconfig: tsconfig.json
+[34mCLI[39m tsup v8.3.5
+[34mCLI[39m Using tsup config: /home/jon/eliza-workspace/packages/eliza-core/packages/plugin-solana/tsup.config.ts
+[34mCLI[39m Target: esnext
+[34mCLI[39m Cleaning output folder
+[34mESM[39m Build start
+[32mESM[39m [1mdist/index.js     [22m[32m73.81 KB[39m
+[32mESM[39m [1mdist/index.js.map [22m[32m138.66 KB[39m
+[32mESM[39m ⚡️ Build success in 99ms
+DTS Build start
+DTS ⚡️ Build success in 7964ms
+DTS dist/index.d.ts 15.32 KB
+[1G[0K⠙[1G[0K[1;32mSuccessfully built plugin-solana[0m
+
+[1mBuilding package: plugin-starknet[0m
+
+> @ai16z/plugin-starknet@0.0.1 build
+> tsup --format esm --dts
+
+[1G[0K[34mCLI[39m Building entry: src/index.ts
+[34mCLI[39m Using tsconfig: tsconfig.json
+[34mCLI[39m tsup v8.3.5
+[34mCLI[39m Using tsup config: /home/jon/eliza-workspace/packages/eliza-core/packages/plugin-starknet/tsup.config.ts
+[34mCLI[39m Target: esnext
+[34mCLI[39m Cleaning output folder
+[34mESM[39m Build start
+[32mESM[39m [1mdist/index.js     [22m[32m321.00 B[39m
+[32mESM[39m [1mdist/index.js.map [22m[32m538.00 B[39m
+[32mESM[39m ⚡️ Build success in 40ms
+DTS Build start
+DTS ⚡️ Build success in 5196ms
+DTS dist/index.d.ts 133.00 B
+[1G[0K⠙[1G[0K[1;32mSuccessfully built plugin-starknet[0m
+
+[1mBuilding package: adapter-postgres[0m
+
+> @ai16z/adapter-postgres@0.0.1 build
+> tsup --format esm --dts
+
+[1G[0K[34mCLI[39m Building entry: src/index.ts
+[34mCLI[39m Using tsconfig: tsconfig.json
+[34mCLI[39m tsup v8.3.5
+[34mCLI[39m Using tsup config: /home/jon/eliza-workspace/packages/eliza-core/packages/adapter-postgres/tsup.config.ts
+[34mCLI[39m Target: esnext
+[34mCLI[39m Cleaning output folder
+[34mESM[39m Build start
+[32mESM[39m [1mdist/index.js     [22m[32m20.96 KB[39m
+[32mESM[39m [1mdist/index.js.map [22m[32m40.76 KB[39m
+[32mESM[39m ⚡️ Build success in 208ms
+DTS Build start
+DTS ⚡️ Build success in 8101ms
+DTS dist/index.d.ts 3.68 KB
+[1G[0K⠙[1G[0K[1;32mSuccessfully built adapter-postgres[0m
+
+[1mBuilding package: adapter-sqlite[0m
+
+> @ai16z/adapter-sqlite@0.0.1 build
+> tsup --format esm --dts
+
+[1G[0K[34mCLI[39m Building entry: src/index.ts
+[34mCLI[39m Using tsconfig: tsconfig.json
+[34mCLI[39m tsup v8.3.5
+[34mCLI[39m Using tsup config: /home/jon/eliza-workspace/packages/eliza-core/packages/adapter-sqlite/tsup.config.ts
+[34mCLI[39m Target: esnext
+[34mCLI[39m Cleaning output folder
+[34mESM[39m Build start
+[32mESM[39m [1mdist/index.js     [22m[32m18.95 KB[39m
+[32mESM[39m [1mdist/index.js.map [22m[32m36.73 KB[39m
+[32mESM[39m ⚡️ Build success in 136ms
+DTS Build start
+DTS ⚡️ Build success in 5468ms
+DTS dist/index.d.ts 6.78 KB
+[1G[0K⠙[1G[0K[1;32mSuccessfully built adapter-sqlite[0m
+
+[1mBuilding package: adapter-sqljs[0m
+
+> @ai16z/adapter-sqljs@0.0.1 build
+> tsup --format esm --dts
+
+[1G[0K[34mCLI[39m Building entry: src/index.ts
+[34mCLI[39m Using tsconfig: tsconfig.json
+[34mCLI[39m tsup v8.3.5
+[34mCLI[39m Using tsup config: /home/jon/eliza-workspace/packages/eliza-core/packages/adapter-sqljs/tsup.config.ts
+[34mCLI[39m Target: esnext
+[34mCLI[39m Cleaning output folder
+[34mESM[39m Build start
+[32mESM[39m [1mdist/index.js     [22m[32m17.94 KB[39m
+[32mESM[39m [1mdist/index.js.map [22m[32m37.76 KB[39m
+[32mESM[39m ⚡️ Build success in 64ms
+DTS Build start
+DTS ⚡️ Build success in 4863ms
+DTS dist/index.d.ts 15.21 KB
+[1G[0K⠙[1G[0K[1;32mSuccessfully built adapter-sqljs[0m
+
+[1mBuilding package: adapter-supabase[0m
+
+> @ai16z/adapter-supabase@0.0.1 build
+> tsup --format esm --dts
+
+[1G[0K[34mCLI[39m Building entry: src/index.ts
+[34mCLI[39m Using tsconfig: tsconfig.json
+[34mCLI[39m tsup v8.3.5
+[34mCLI[39m Using tsup config: /home/jon/eliza-workspace/packages/eliza-core/packages/adapter-supabase/tsup.config.ts
+[34mCLI[39m Target: esnext
+[34mCLI[39m Cleaning output folder
+[34mESM[39m Build start
+[32mESM[39m [1mdist/index.js     [22m[32m14.31 KB[39m
+[32mESM[39m [1mdist/index.js.map [22m[32m31.04 KB[39m
+[32mESM[39m ⚡️ Build success in 72ms
+DTS Build start
+DTS ⚡️ Build success in 5833ms
+DTS dist/index.d.ts 3.62 KB
+[1G[0K⠙[1G[0K[1;32mSuccessfully built adapter-supabase[0m
+
+[1mBuilding package: client-auto[0m
+
+> @ai16z/client-auto@0.0.1 build
+> tsup --format esm --dts
+
+[1G[0K[34mCLI[39m Building entry: src/index.ts
+[34mCLI[39m Using tsconfig: tsconfig.json
+[34mCLI[39m tsup v8.3.5
+[34mCLI[39m Using tsup config: /home/jon/eliza-workspace/packages/eliza-core/packages/client-auto/tsup.config.ts
+[34mCLI[39m Target: esnext
+[34mCLI[39m Cleaning output folder
+[34mESM[39m Build start
+DTS Build start
+[32mESM[39m [1mdist/index.js     [22m[32m1.04 MB[39m
+[32mESM[39m [1mdist/index.js.map [22m[32m1.48 MB[39m
+[32mESM[39m ⚡️ Build success in 1615ms
+DTS ⚡️ Build success in 5582ms
+DTS dist/index.d.ts 489.00 B
+[1G[0K⠙[1G[0K[1;32mSuccessfully built client-auto[0m
+
+[1mBuilding package: client-direct[0m
+
+> @ai16z/client-direct@0.0.1 build
+> tsup --format esm --dts
+
+[1G[0K[34mCLI[39m Building entry: src/index.ts
+[34mCLI[39m Using tsconfig: tsconfig.json
+[34mCLI[39m tsup v8.3.5
+[34mCLI[39m Using tsup config: /home/jon/eliza-workspace/packages/eliza-core/packages/client-direct/tsup.config.ts
+[34mCLI[39m Target: esnext
+[34mCLI[39m Cleaning output folder
+[34mESM[39m Build start
+[32mESM[39m [1mdist/index.js     [22m[32m6.87 KB[39m
+[32mESM[39m [1mdist/index.js.map [22m[32m14.07 KB[39m
+[32mESM[39m ⚡️ Build success in 29ms
+DTS Build start
+DTS ⚡️ Build success in 7181ms
+DTS dist/index.d.ts 630.00 B
+[1G[0K⠙[1G[0K[1;32mSuccessfully built client-direct[0m
+
+[1mBuilding package: client-discord[0m
+
+> @ai16z/client-discord@0.0.1 build
+> tsup --format esm --dts
+
+[1G[0K[34mCLI[39m Building entry: src/index.ts
+[34mCLI[39m Using tsconfig: tsconfig.json
+[34mCLI[39m tsup v8.3.5
+[34mCLI[39m Using tsup config: /home/jon/eliza-workspace/packages/eliza-core/packages/client-discord/tsup.config.ts
+[34mCLI[39m Target: esnext
+[34mCLI[39m Cleaning output folder
+[34mESM[39m Build start
+[32mESM[39m [1mdist/index.js     [22m[32m98.12 KB[39m
+[32mESM[39m [1mdist/index.js.map [22m[32m197.53 KB[39m
+[32mESM[39m ⚡️ Build success in 98ms
+DTS Build start
+DTS ⚡️ Build success in 7768ms
+DTS dist/index.d.ts 881.00 B
+[1G[0K⠙[1G[0K[1;32mSuccessfully built client-discord[0m
+
+[1mBuilding package: client-telegram[0m
+
+> @ai16z/client-telegram@0.0.1 build
+> tsup --format esm --dts
+
+[1G[0K[34mCLI[39m Building entry: src/index.ts
+[34mCLI[39m Using tsconfig: tsconfig.json
+[34mCLI[39m tsup v8.3.5
+[34mCLI[39m Using tsup config: /home/jon/eliza-workspace/packages/eliza-core/packages/client-telegram/tsup.config.ts
+[34mCLI[39m Target: esnext
+[34mCLI[39m Cleaning output folder
+[34mESM[39m Build start
+[32mESM[39m [1mdist/index.js     [22m[32m15.39 KB[39m
+[32mESM[39m [1mdist/index.js.map [22m[32m28.94 KB[39m
+[32mESM[39m ⚡️ Build success in 44ms
+DTS Build start
+DTS ⚡️ Build success in 6842ms
+DTS dist/index.d.ts 160.00 B
+[1G[0K⠙[1G[0K[1;32mSuccessfully built client-telegram[0m
+
+[1mBuilding package: client-twitter[0m
+
+> @ai16z/client-twitter@0.0.1 build
+> tsup --format esm --dts
+
+[1G[0K[34mCLI[39m Building entry: src/index.ts
+[34mCLI[39m Using tsconfig: tsconfig.json
+[34mCLI[39m tsup v8.3.5
+[34mCLI[39m Using tsup config: /home/jon/eliza-workspace/packages/eliza-core/packages/client-twitter/tsup.config.ts
+[34mCLI[39m Target: esnext
+[34mCLI[39m Cleaning output folder
+[34mESM[39m Build start
+[32mESM[39m [1mdist/index.js     [22m[32m38.61 KB[39m
+[32mESM[39m [1mdist/index.js.map [22m[32m78.82 KB[39m
+[32mESM[39m ⚡️ Build success in 129ms
+DTS Build start
+DTS ⚡️ Build success in 7678ms
+DTS dist/index.d.ts 157.00 B
+[1G[0K⠙[1G[0K[1;32mSuccessfully built client-twitter[0m
+
+[1mBuilding package: plugin-node[0m
+
+> @ai16z/plugin-node@0.0.1 build
+> tsup --format esm --dts
+
+[1G[0K[34mCLI[39m Building entry: src/index.ts
+[34mCLI[39m Using tsconfig: tsconfig.json
+[34mCLI[39m tsup v8.3.5
+[34mCLI[39m Using tsup config: /home/jon/eliza-workspace/packages/eliza-core/packages/plugin-node/tsup.config.ts
+[34mCLI[39m Target: esnext
+[34mCLI[39m Cleaning output folder
+[34mESM[39m Build start
+[32mESM[39m [1mdist/index.js     [22m[32m236.42 KB[39m
+[32mESM[39m [1mdist/index.js.map [22m[32m474.73 KB[39m
+[32mESM[39m ⚡️ Build success in 178ms
+DTS Build start
+DTS ⚡️ Build success in 8420ms
+DTS dist/index.d.ts 4.63 KB
+[1G[0K⠙[1G[0K[1;32mSuccessfully built plugin-node[0m
+
+[1mBuilding package: plugin-bootstrap[0m
+
+> @ai16z/plugin-bootstrap@0.0.1 build
+> tsup --format esm --dts
+
+[1G[0K[34mCLI[39m Building entry: src/index.ts
+[34mCLI[39m Using tsconfig: tsconfig.json
+[34mCLI[39m tsup v8.3.5
+[34mCLI[39m Using tsup config: /home/jon/eliza-workspace/packages/eliza-core/packages/plugin-bootstrap/tsup.config.ts
+[34mCLI[39m Target: esnext
+[34mCLI[39m Cleaning output folder
+[34mESM[39m Build start
+[32mESM[39m [1mdist/index.js     [22m[32m71.25 KB[39m
+[32mESM[39m [1mdist/index.js.map [22m[32m133.37 KB[39m
+[32mESM[39m ⚡️ Build success in 82ms
+DTS Build start
+DTS ⚡️ Build success in 5867ms
+DTS dist/index.d.ts 108.00 B
+[1G[0K⠙[1G[0K[1;32mSuccessfully built plugin-bootstrap[0m
+
+[1mBuilding package: plugin-image-generation[0m
+
+> @ai16z/plugin-image-generation@0.0.1 build
+> tsup --format esm --dts
+
+[1G[0K[34mCLI[39m Building entry: src/index.ts
+[34mCLI[39m Using tsconfig: tsconfig.json
+[34mCLI[39m tsup v8.3.5
+[34mCLI[39m Using tsup config: /home/jon/eliza-workspace/packages/eliza-core/packages/plugin-image-generation/tsup.config.ts
+[34mCLI[39m Target: esnext
+[34mCLI[39m Cleaning output folder
+[34mESM[39m Build start
+[32mESM[39m [1mdist/index.js     [22m[32m4.76 KB[39m
+[32mESM[39m [1mdist/index.js.map [22m[32m10.58 KB[39m
+[32mESM[39m ⚡️ Build success in 21ms
+DTS Build start
+DTS ⚡️ Build success in 3514ms
+DTS dist/index.d.ts 217.00 B
+[1G[0K⠙[1G[0K[1;32mSuccessfully built plugin-image-generation[0m
+
+[1mBuild process completed.😎[0m
